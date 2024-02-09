@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
+const socket = new WebSocket("ws://localhost:8080");
 
 function App() {
   useEffect(() => {
-    const socket = new WebSocket("ws://localhost:8080");
-
     // Connection opened
     socket.addEventListener("open", function (event) {
       socket.send("Hello Server!");
@@ -15,9 +14,16 @@ function App() {
     });
 
     // Clean up on component unmount
-    return () => socket.close();
+    // return () => socket.close();
   }, []);
-  return <div className=""></div>;
+  const sendEvent = (e: React.MouseEvent<HTMLButtonElement>) => {
+    socket.send("Hello Server button click");
+  };
+  return (
+    <div className="">
+      <button onClick={sendEvent}>Send Event </button>
+    </div>
+  );
 }
 
 export default App;
